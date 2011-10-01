@@ -13,14 +13,13 @@ io.sockets.on('connection', function (socket) {
   socket.emit('idCode', { data: 'onmessage' });
   socket.on('googleRequest',function(data){ 
     var client = http.createClient(80, 'www.google.co.jp');
-    //var request = client.request('GET', '/m/directions?dirflg=r&hl=ja&saddr=&daddr=&date=20110923&time=1632&ttype=last', {});
-    var request = client.request('GET', '/m/directions?time=1632&ttype=last&date=20111023&dirflg=r&hl=ja&saddr=渋谷駅（東京）&daddr=横浜駅（神奈川）', {});
+    var request = client.request('GET', '/m/directions?ttype=last&dirflg=r&hl=ja&dirflg=r&hl=ja&ri=0&saddr='+ data.from  +'&daddr=' + data.to, {});
     var content = '';
     request.on('response', function(response){
       response.on('data', function(chunk){
         content = chunk;
         socket.emit('idCode', { data: content + ''});
-        socket.emit('idCode', { data: data.code});
+        socket.emit('idCode', { data: data.delim});
       }); 
     }); 
     request.end();
